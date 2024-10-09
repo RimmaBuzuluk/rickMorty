@@ -11,7 +11,7 @@ export default function Home() {
 		const fetchData = async () => {
 			const response = await fetch('https://rickandmortyapi.com/api/character');
 			const data = await response.json();
-			setUsers(data.results); // Отримуємо саме масив персонажів з поля "results"
+			setUsers(data.results);
 		};
 		fetchData();
 	}, []);
