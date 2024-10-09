@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 export default function Page() {
 	const [episodes, setEpisodes] = useState<Episode[]>([]);
 	const [characters, setCharacters] = useState<{ [key: number]: User[] }>([]);
+	const [showAll, setShowAll] = useState<{ [key: number]: boolean }>({});
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -32,6 +33,10 @@ export default function Page() {
 		fetchData();
 	}, []);
 
+	const toggleShowAll = (episodeId: number) => {
+		setShowAll(prev => ({ ...prev, [episodeId]: !prev[episodeId] }));
+	};
+
 	return (
 		<div>
 			{episodes.map((episode: Episode) => (
@@ -41,13 +46,18 @@ export default function Page() {
 					<div>
 						<h3>Персонажі:</h3>
 						<div className='grid grid-cols-3 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-12 gap-6'>
-							{characters[episode.id]?.map((character: User) => (
+							{(showAll[episode.id] ? characters[episode.id] : characters[episode.id]?.slice(0, 6))?.map((character: User) => (
 								<Link href={`/user/${character.id}`} key={character.id}>
 									<img className='w-auto' src={character.image} alt={character.name} width={100} />
 									<p className='text-xs'>{character.name}</p>
 								</Link>
 							))}
 						</div>
+						{characters[episode.id]?.length > 6 && (
+							<button className='mt-2 mb-4 bg-yellow-50 p-4 rounded-3xl text-green-600 hover:bg-yellow-600 ' onClick={() => toggleShowAll(episode.id)}>
+								{showAll[episode.id] ? 'Показати менше' : 'Показати всіх'}
+							</button>
+						)}
 					</div>
 				</div>
 			))}

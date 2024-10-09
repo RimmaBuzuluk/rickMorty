@@ -20,7 +20,6 @@ export default function Home() {
 		<div className=''>
 			<h1 className='text-2xl font-bold mb-4'>Персонажі Rick & Morty</h1>
 
-			{/* Контейнер з grid-сіткою */}
 			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-auto '>
 				{users.map((user: User) => (
 					<UserItem key={user.id} user={user} />
