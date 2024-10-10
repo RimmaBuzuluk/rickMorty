@@ -37,6 +37,8 @@ export default function Page() {
 		setShowAll(prev => ({ ...prev, [episodeId]: !prev[episodeId] }));
 	};
 
+	console.log(characters);
+
 	return (
 		<div>
 			{episodes.map((episode: Episode) => (
