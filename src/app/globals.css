@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-	--background: #ffffff;
-	--foreground: #171717;
+	--background: #171717;
+	--foreground: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,11 +17,28 @@
 body {
 	color: var(--foreground);
 	background: var(--background);
-	font-family: Arial, Helvetica, sans-serif;
+	/* font-family: Arial, Helvetica, sans-serif; */
+	font-family: 'Creepster', sans-serif;
 }
 
 @layer utilities {
 	.text-balance {
 		text-wrap: balance;
 	}
+}
+
+input::-webkit-input-placeholder {
+	color: white;
+}
+
+input:-moz-placeholder {
+	color: white;
+}
+
+input::-moz-placeholder {
+	color: white;
+}
+
+input:-ms-input-placeholder {
+	color: white;
 }

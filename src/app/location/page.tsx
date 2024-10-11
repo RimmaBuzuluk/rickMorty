@@ -34,7 +34,7 @@ export default function Page() {
 
 	return (
 		<div>
-			<h1>Локації Rick and Morty</h1>
+			<h1 className='text-2xl font-bold mb-4 text-green-500'>Локації Rick and Morty</h1>
 
 			{locations.map((location: Location) => (
 				<div key={location.id} style={{ border: '1px solid black', padding: '10px', marginBottom: '10px' }}>
