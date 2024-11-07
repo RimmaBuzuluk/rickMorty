@@ -1,8 +1,12 @@
+'use client';
+
 // import type { Metadata } from "next";
 import localFont from 'next/font/local';
 import './globals.css';
 import Link from 'next/link';
 import Head from 'next/head';
+import { Provider } from 'react-redux';
+import { store } from './api/store';
 
 const geistSans = localFont({
 	src: './fonts/GeistVF.woff',
@@ -31,26 +35,25 @@ export default function RootLayout({
 				<link href='https://fonts.googleapis.com/css2?family=Creepster&display=swap' rel='stylesheet' />
 			</Head>
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<header className='flex border-b border-gray-300 p-4'>
-					<div className='w-36  flex justify-between items-center mr-8'>
-						<img src='https://upload.wikimedia.org/wikipedia/commons/d/d4/Rickandmortylogoru.png' />
-					</div>
-					<div className='flex justify-between items-center gap-4'>
-						<Link href={'/'} className='text-lg font-medium text-green-500 hover:text-black'>
-							Users
-						</Link>
-						<Link href={'/episode'} className='text-lg font-medium text-green-500 hover:text-black'>
-							Episodes
-						</Link>
-						<Link href={'/location'} className='text-lg font-medium text-green-500 hover:text-black'>
-							Locations
-						</Link>
-					</div>
-				</header>
-				<main className='container mx-auto p-4'>{children}</main>
-				{/* <footer>
-					<footer>футер</footer>
-				</footer> */}
+				<Provider store={store}>
+					<header className='flex border-b border-gray-300 p-4'>
+						<div className='w-36  flex justify-between items-center mr-8'>
+							<img src='https://upload.wikimedia.org/wikipedia/commons/d/d4/Rickandmortylogoru.png' />
+						</div>
+						<div className='flex justify-between items-center gap-4'>
+							<Link href={'/'} className='text-lg font-medium text-green-500 hover:text-black'>
+								Users
+							</Link>
+							<Link href={'/episode'} className='text-lg font-medium text-green-500 hover:text-black'>
+								Episodes
+							</Link>
+							<Link href={'/location'} className='text-lg font-medium text-green-500 hover:text-black'>
+								Locations
+							</Link>
+						</div>
+					</header>
+					<main className='container mx-auto p-4'>{children}</main>
+				</Provider>
 			</body>
 		</html>
 	);
