@@ -8,14 +8,19 @@ import { RootState } from './api/store';
 import UserItem from '@/components/User';
 import { User } from '@/types/User';
 import classNames from 'classnames';
+import { filterByName } from './utils/functions/filters';
+import { getTotalPages, paginate } from './utils/functions/pagination';
 
 export default function Home() {
 	const dispatch = useDispatch();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [searchTerm, setSearchTerm] = useState('');
 	const userPerPage = 8;
 	const users = useSelector((state: RootState) => state.users.results);
+
+	const usersShown = filterByName(users, searchTerm);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -47,7 +52,9 @@ export default function Home() {
 		}
 	};
 
-	const totalPages = users ? Math.ceil(users.length / userPerPage) : 1;
+	// Використання утиліти пагінації
+	const totalPages = getTotalPages(usersShown, userPerPage);
+	const paginatedUsers = paginate(usersShown, currentPage, userPerPage);
 
 	if (isLoading) {
 		return <div className='text-white'> loading</div>;
@@ -61,18 +68,18 @@ export default function Home() {
 		<div className=''>
 			<h1 className='text-2xl font-bold mb-4 text-green-500'>Персонажі Rick & Morty</h1>
 			<div className='flex my-6'>
-				<input placeholder='Enter name' className='bg-green-500 text-white p-2 w-2/3  rounded-3xl my-0 mx-auto' />
+				<input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder='Enter name' className='bg-green-500 text-white p-2 w-2/3  rounded-3xl my-0 mx-auto' />
 			</div>
-			{!error && !isLoading && users && (
+			{!error && !isLoading && paginatedUsers && (
 				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-auto '>
-					{users.map((user: User) => (
+					{paginatedUsers.map((user: User) => (
 						<UserItem key={user.id} user={user} />
 					))}
 				</div>
 			)}
-			{!error && !isLoading && users && (
+			{!error && !isLoading && paginatedUsers && (
 				<div className='flex justify-center mt-16'>
-					<button onClick={() => handlePrevPage()} className={classNames('w-10', 'h-10', 'rounded-3xl', 'border-2', 'hover:bg-gray-200', { 'bg-gray-200 text-white': currentPage === 1 })}>
+					<button onClick={handlePrevPage} className={classNames('w-10', 'h-10', 'rounded-3xl', 'border-2', 'hover:bg-gray-200', { 'bg-gray-200 text-white': currentPage === 1 })}>
 						{'<'}
 					</button>
 					<div>
@@ -82,9 +89,9 @@ export default function Home() {
 							</button>
 						))}
 					</div>
-					<button onClick={() => handleNextPage()} className={classNames('w-10', 'h-10', 'rounded-3xl', 'border-2', 'hover:bg-gray-200', { 'bg-gray-200 text-white': currentPage === totalPages })}>
+					<button onClick={handleNextPage} className={classNames('w-10', 'h-10', 'rounded-3xl', 'border-2', 'hover:bg-gray-200', { 'bg-gray-200 text-white': currentPage === totalPages })}>
 						{'>'}
-					</button>{' '}
+					</button>
 				</div>
 			)}
 		</div>
